@@ -17,6 +17,15 @@ handles.each_with_index do |user, index|
     "screen_name": user
   }
   req = Twitter::REST::Request.new(twitter_api, :post, '/1.1/blocks/create.json', arg)
-  res = req.perform
-  puts "done"
+  found = true
+  begin
+    res = req.perform
+  rescue Twitter::Error::NotFound => e
+    found = false
+  end
+  if found
+    puts "done"
+  else
+    puts "not found, skipping"
+  end
 end
