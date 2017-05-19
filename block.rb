@@ -10,4 +10,4 @@ config = YAML.load_file("config.yml")
 require "twitter"
 twitter_api = Twitter::REST::Client.new(config)
 
-puts twitter_api.users(handles).map(&:id)
+print twitter_api.users(handles).map(&:id).join("\n")
