@@ -10,4 +10,13 @@ config = YAML.load_file("config.yml")
 require "twitter"
 twitter_api = Twitter::REST::Client.new(config)
 
-puts twitter_api.users(handles).map(&:id)
+handles.each_with_index do |user, index|
+  print "(#{index+1}/#{handles.length}) Blocking advertiser #{user}..."
+  $stdout.flush
+  arg = {
+    "screen_name": user
+  }
+  req = Twitter::REST::Request.new(twitter_api, :post, '/1.1/blocks/create.json', arg)
+  res = req.perform
+  puts "done"
+end
